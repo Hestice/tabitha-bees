@@ -19,7 +19,7 @@ export default async function Page() {
       sku,
       images,
       currency,
-      price,
+      prices,
       description,
       "slug": slug.current
     }`

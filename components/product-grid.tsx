@@ -29,27 +29,41 @@ export function ProductGrid({products}:Props) {
 
   return (
     <div className="grid grid-cols-1 gap-x-6 gap-y-10 sm:grid-cols-3 lg:col-span-3 lg:gap-x-8">
-      {products.map((product) => (
-        <Link key={product._id} href={`/products/${product.slug}`} className="group text-sm">
-          <div className="aspect-h-1 aspect-w-1 w-full overflow-hidden rounded-lg border-2 border-gray-200 bg-gray-100 group-hover:opacity-75 dark:border-gray-800">
-            <Image
-            placeholder="blur"
-            blurDataURL={`data:image/svg+xml;base64,${toBase64(shimmer(255,280))}`}
-              src={urlForImage(product.images[0]).url()}
-              alt={product.name}
-              width={255}
-              height={280}
-              className="h-full w-full object-cover object-center"
-            />
-          </div>
-          <h3 className="mt-4 font-medium">{product.name}</h3>
-          <p className="mt-2 font-medium">{formatCurrencyString({
-            currency: product.currency,
-            value:product.price})} 
+      {products.map((product) => {
+        // Debugging console.log
+        console.log("Product data:", product);
+  
+        return (
+          <Link key={product._id} href={`/products/${product.slug}`} className="group text-sm">
+            <div className="aspect-h-1 aspect-w-1 w-full overflow-hidden rounded-lg border-2 border-gray-200 bg-gray-100 group-hover:opacity-75 dark:border-gray-800">
+              <Image
+                placeholder="blur"
+                blurDataURL={`data:image/svg+xml;base64,${toBase64(shimmer(255, 280))}`}
+                src={urlForImage(product.images[0]).url()}
+                alt={product.name}
+                width={255}
+                height={280}
+                className="h-full w-full object-cover object-center"
+              />
+            </div>
+            <h3 className="mt-4 font-medium">{product.name}</h3>
+            <p className="mt-2 font-medium">
+              {/* Display a single price or a price range */}
+              {Array.isArray(product.prices) && product.prices.length > 0 ? (
+                product.prices.length === 1 ? (
+                  `Price: $${product.prices[0]}`
+                ) : (
+                  `Price Range: $${Math.min(...product.prices)} - $${Math.max(...product.prices)}`
+                )
+              ) : (
+                // If there are no prices or prices are not an array, display a message or handle it accordingly
+                `Price information not available`
+              )}
             </p>
-            {/* issue with price range, need to modify code, take refence from inventory. */}
-        </Link>
-      ))}
+          </Link>
+        );
+      })}
     </div>
   )
+  
 }
