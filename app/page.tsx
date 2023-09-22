@@ -7,12 +7,20 @@ import { cn } from "@/lib/utils"
 import { ProductFilters } from "@/components/product-filters"
 import { ProductGrid } from "@/components/product-grid"
 import { ProductSort } from "@/components/product-sort"
+import { Console } from "console"
 
-interface Props {}
-
-export default async function Page() {
+interface Props {
+  searchParams: {
+    date?: string
+    prices?: string
+  }
+}
+export default async function Page({searchParams}: Props) {
+  const priceOrder = searchParams.prices? `| order(prices[0] ${searchParams.prices})` : ""
+  const dateOrder = searchParams.date? `| order(_createdAt ${searchParams.date})` : ""
+  const order = `${priceOrder}${dateOrder}`
   const products = await client.fetch<SanityProduct[]>(
-    groq`*[_type=="product"]{
+    groq`*[_type=="product"] ${order}{
       _id,
       _createdAt,
       name,
@@ -24,7 +32,7 @@ export default async function Page() {
       "slug": slug.current
     }`
   )
-
+  
   return (
     <div>
       <div className="px-4 pt-20 text-center">

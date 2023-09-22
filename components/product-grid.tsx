@@ -31,7 +31,7 @@ export function ProductGrid({products}:Props) {
     <div className="grid grid-cols-1 gap-x-6 gap-y-10 sm:grid-cols-3 lg:col-span-3 lg:gap-x-8">
       {products.map((product) => {
         // Debugging console.log
-        console.log("Product data:", product);
+        // console.log("Product data:", product);
   
         return (
           <Link key={product._id} href={`/products/${product.slug}`} className="group text-sm">
