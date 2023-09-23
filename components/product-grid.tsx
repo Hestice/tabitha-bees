@@ -51,9 +51,9 @@ export function ProductGrid({products}:Props) {
               {/* Display a single price or a price range */}
               {Array.isArray(product.prices) && product.prices.length > 0 ? (
                 product.prices.length === 1 ? (
-                  `Price: $${product.prices[0]}`
+                  `Price: ₱${product.prices[0]}`
                 ) : (
-                  `Price Range: $${Math.min(...product.prices)} - $${Math.max(...product.prices)}`
+                  `Price Range: ₱${Math.min(...product.prices)} - ₱${Math.max(...product.prices)}`
                 )
               ) : (
                 // If there are no prices or prices are not an array, display a message or handle it accordingly
