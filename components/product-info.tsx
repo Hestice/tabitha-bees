@@ -17,15 +17,43 @@ interface Props {
 
 export function ProductInfo({product}:Props) {
   const [selectedSize, setSelectedSize] = useState(product.sizes[0])
+  const {addItem, incrementItem, cartDetails} = useShoppingCart()
+  const { toast } = useToast()
+  const isInCart = !!cartDetails?.[product._id]
+
   const sizeIndex = product.sizes.indexOf(selectedSize)
-  function addToCart() {}
+  const equivalentPrice = product.prices[sizeIndex]
+
+  function addToCart() {
+    const item = {
+      ...product,
+      product_data:{
+        size: selectedSize,
+        price: equivalentPrice
+      }
+    }
+    isInCart ? incrementItem(item._id) : addItem(item)
+    toast({
+      title: `${item.name} (${getSizeName(selectedSize)})`,
+      description: "Product added to cart",
+      action: (
+        <Link href='/cart'>
+          <Button variant="link" className="gap-x-2 whitespace-nowrap">
+            <span>Open Cart</span>
+            <ArrowRight className="h-5 w-5"/>
+          </Button>
+        </Link>
+      )
+    })
+  }
+
   return (
     <div className="mt-10 px-4 sm:mt-16 sm:px-0 lg:mt-0">
       <h1 className="text-3xl font-bold tracking-tight">{product.name}</h1>
 
       <div className="mt-3">
         <h2 className="sr-only">Product information</h2>
-        <p className="text-3xl tracking-tight">₱{product.prices[sizeIndex]}</p>
+        <p className="text-3xl tracking-tight">₱{equivalentPrice}</p>
       </div>
 
       <div className="mt-6">
@@ -52,6 +80,7 @@ export function ProductInfo({product}:Props) {
         <div className="mt-4 flex">
           <Button
             type="button"
+            onClick={addToCart}
             className="w-full bg-yellow-500 py-6 text-base font-medium text-white hover:bg-yellow-600  focus:outline-none focus:ring-2 focus:ring-yellow-400"
           >
             Add to cart
