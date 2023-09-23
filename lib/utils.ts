@@ -17,3 +17,16 @@ export function getSizeName(value: string) {
       return "One Size"
   }
 }
+
+export function getSizeValue(value: string) {
+  switch (value) {
+    case "s":
+      return "120g"
+    case "r":
+      return "350g"
+    case "l":
+      return "450g"
+    case "one-size":
+      return "One Size"
+  }
+}

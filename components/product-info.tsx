@@ -7,6 +7,7 @@ import { formatCurrencyString, useShoppingCart } from "use-shopping-cart"
 
 import { SanityProduct } from "@/config/inventory"
 import { getSizeName } from "@/lib/utils"
+import { getSizeValue } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
 import { useToast } from "@/components/ui/use-toast"
 
@@ -15,15 +16,16 @@ interface Props {
 }
 
 export function ProductInfo({product}:Props) {
+  const [selectedSize, setSelectedSize] = useState(product.sizes[0])
+  const sizeIndex = product.sizes.indexOf(selectedSize)
   function addToCart() {}
-
   return (
     <div className="mt-10 px-4 sm:mt-16 sm:px-0 lg:mt-0">
       <h1 className="text-3xl font-bold tracking-tight">{product.name}</h1>
 
       <div className="mt-3">
         <h2 className="sr-only">Product information</h2>
-        <p className="text-3xl tracking-tight">Price</p>
+        <p className="text-3xl tracking-tight">₱{product.prices[sizeIndex]}</p>
       </div>
 
       <div className="mt-6">
@@ -33,10 +35,14 @@ export function ProductInfo({product}:Props) {
 
       <div className="mt-4">
         <p>
-          Size: <strong>{getSizeName(product.sizes[0])}</strong>
+          Size: <strong>{getSizeName(selectedSize)}</strong>
+          <br/>
+          Content Weight: <strong>{getSizeValue(selectedSize)}</strong>
         </p>
         {product.sizes.map((size) => (
-          <Button key={size} variant="default" className="mr-2 mt-4">
+          <Button onClick={()=> 
+            setSelectedSize(size)}
+          key={size} variant={selectedSize === size ? 'default' : 'outline'} className="mr-2 mt-4">
             {getSizeName(size)}
           </Button>
         ))}

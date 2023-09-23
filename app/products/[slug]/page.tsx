@@ -27,7 +27,7 @@ export default async function Page({params}: Props) {
       categories,
       "slug": slug.current
     }`)
-  console.log(product)
+  // console.log(product)
   return (
     <main className="mx-auto max-w-5xl sm:px-6 sm:pt-16 lg:px-8">
       <div className="mx-auto max-w-2xl lg:max-w-none">
