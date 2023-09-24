@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import Link from "next/link"
 import { ArrowRight } from "lucide-react"
 import { formatCurrencyString, useShoppingCart } from "use-shopping-cart"
@@ -17,25 +17,36 @@ interface Props {
 
 export function ProductInfo({product}:Props) {
   const [selectedSize, setSelectedSize] = useState(product.sizes[0])
+  const [quantity, setQuantity] = useState(1);
   const {addItem, incrementItem, cartDetails} = useShoppingCart()
   const { toast } = useToast()
   const isInCart = !!cartDetails?.[product._id]
 
   const sizeIndex = product.sizes.indexOf(selectedSize)
   const equivalentPrice = product.prices[sizeIndex]
+  console.log(cartDetails)
+  useEffect(() => {
+    setQuantity(1);
+  }, [selectedSize]);
 
   function addToCart() {
-    const item = {
+    
+     const item = {
       ...product,
+      id: `${product.id}-${selectedSize}`,
       product_data:{
         size: selectedSize,
-        price: equivalentPrice
+        price: equivalentPrice,
       }
     }
-    isInCart ? incrementItem(item._id) : addItem(item)
+    const quantityObject = { count: quantity };
+    addItem(item, quantityObject)
+    // isInCart ? incrementItem(item._id, quantityObject) : addItem(item, quantityObject)
+    console.log(item)
+
     toast({
       title: `${item.name} (${getSizeName(selectedSize)})`,
-      description: "Product added to cart",
+      description: `${quantity} Product(s) added to cart`,
       action: (
         <Link href='/cart'>
           <Button variant="link" className="gap-x-2 whitespace-nowrap">
@@ -69,14 +80,30 @@ export function ProductInfo({product}:Props) {
         </p>
         {product.sizes.map((size) => (
           <Button onClick={()=> 
-            setSelectedSize(size)}
-          key={size} variant={selectedSize === size ? 'default' : 'outline'} className="mr-2 mt-4">
+            setSelectedSize(size)
+          }
+              key={size} variant={selectedSize === size ? 'default' : 'outline'} className="mr-2 mt-4">
             {getSizeName(size)}
           </Button>
         ))}
       </div>
+      <br/>
 
       <form className="mt-6">
+        {/* Quantity input field */}
+        <div className="mt-4">
+          <label htmlFor="quantity" className="font-medium text-gray-700">
+            Quantity:
+          </label>
+          <input
+            type="number"
+            id="quantity"
+            className="w-16 border rounded-md p-1 ml-2"
+            value={quantity}
+            onChange={(e) => setQuantity(Number(e.target.value))}
+            min="1"
+          />
+        </div>
         <div className="mt-4 flex">
           <Button
             type="button"

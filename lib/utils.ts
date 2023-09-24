@@ -27,6 +27,6 @@ export function getSizeValue(value: string) {
     case "l":
       return "450g"
     case "one-size":
-      return "One Size"
+      return "4.7g"
   }
 }
