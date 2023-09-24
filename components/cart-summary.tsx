@@ -7,6 +7,11 @@ import { formatCurrencyString, useShoppingCart } from "use-shopping-cart"
 import { Button } from "@/components/ui/button"
 
 export function CartSummary() {
+  const {formattedTotalPrice, totalPrice, cartDetails, cartCount } = useShoppingCart()
+  console.log("formattedTotalPrice:", formattedTotalPrice)
+  console.log("totalPrice: ",totalPrice)
+  console.log("cartDetails: ",cartDetails)
+  console.log("cartCount: ",cartCount)
   function onCheckout() {}
 
   return (
@@ -21,7 +26,7 @@ export function CartSummary() {
       <dl className="mt-6 space-y-4">
         <div className="flex items-center justify-between">
           <dt className="text-sm">Subtotal</dt>
-          <dd className="text-sm font-medium">Subtotal Amount</dd>
+          <dd className="text-sm font-medium">{formattedTotalPrice}</dd>
         </div>
         <div className="flex items-center justify-between border-t border-gray-200 pt-4 dark:border-gray-600">
           <dt className="flex items-center text-sm">
