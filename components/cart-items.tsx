@@ -3,7 +3,7 @@
 import Image from "next/image"
 import Link from "next/link"
 import { urlForImage } from "@/sanity/lib/image"
-import { Clock, X } from "lucide-react"
+import { ShoppingCart, X } from "lucide-react"
 import { formatCurrencyString, useShoppingCart } from "use-shopping-cart"
 import { Product } from "use-shopping-cart/core"
 
@@ -42,11 +42,11 @@ export function CartItems() {
           <div className="shrink-0">
             <Image
               placeholder="blur"
-              blurDataURL={`data:image/svg+xml;base64,${toBase64(shimmer(200, 200))}`}
+              blurDataURL={`data:image/svg+xml;base64,${toBase64(shimmer(170, 170))}`}
               src={urlForImage(product.images[0]).url()}
               alt={product.name}
-              width={200}
-              height={200}
+              width={170}
+              height={170}
               className="h-24 w-24 rounded-md border-2 border-gray-200 object-cover object-center dark:border-gray-800 sm:h-48 sm:w-48"
             />
           </div>
@@ -64,9 +64,6 @@ export function CartItems() {
                 <p className="mt-1 text-sm font-medium">
                   {/* @ts-ignore */}
                   <strong>₱{product.product_data.price}</strong></p>
-                <p className="mt-1 text-sm font-medium">
-                  Total: {/* @ts-ignore */}
-                  <strong>₱{product.product_data.price * product.quantity}</strong></p>
                 <p className="mt-1 text-sm font-medium">
                   Size: {/* @ts-ignore */}
                   <strong>{getSizeName(product.product_data.size)}</strong>
@@ -102,8 +99,10 @@ export function CartItems() {
             </div>
             
             <p className="mt-4 flex space-x-2 text-sm">
-              <Clock className="h-5 w-5 shrink-0" aria-hidden="true" />
-              <span>Ships in 1 week</span>
+              <ShoppingCart className="h-5 w-5 shrink-0" aria-hidden="true" />
+              <span>
+                  Total: {/* @ts-ignore */}
+                  <strong>₱{product.product_data.price * product.quantity}</strong></span>
             </p>
           </div>
         </li>
