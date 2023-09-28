@@ -14,33 +14,38 @@ interface Props {
   product: SanityProduct
 }
 
-export function ProductInfo({product}:Props) {
+export function ProductInfo({ product }: Props) {
   const [selectedSize, setSelectedSize] = useState(product.sizes[0])
   const [selectedScent, setSelectedScent] = useState<string | null>(
     product.scent && product.scent.length > 0 ? product.scent[0] : null
   );
-  
-  const [quantity, setQuantity] = useState(1);
-  const {addItem, incrementItem, cartDetails} = useShoppingCart()
-  const { toast } = useToast()
+
+  const [quantity, setQuantity] = useState(1)
+  const { addItem, incrementItem, cartDetails } = useShoppingCart()
+  const { toast } = useToast();
   const isInCart = !!cartDetails?.[product._id]
 
   const sizeIndex = product.sizes.indexOf(selectedSize)
-  const equivalentPrice = product.prices[sizeIndex]
+  const scentIndex = selectedScent !== null ? product.scent.indexOf(selectedScent) : -1
+  const equivalentPriceBySize = product.prices[sizeIndex]
+  const equivalentPriceByScent = scentIndex !== -1 ? product.prices[scentIndex] : 0
+  const equivalentPrice = equivalentPriceByScent || equivalentPriceBySize
+
   console.log(cartDetails)
   useEffect(() => {
     setQuantity(1);
-  }, [selectedSize]);
+  }, [selectedSize, selectedScent]);
 
   function addToCart() {
     
-     const item = {
+    const item = {
       ...product,
-      id: `${product.id}-${selectedSize}`,
-      product_data:{
+      id: `${product.id}-${selectedSize}${selectedScent !== null ? `-${selectedScent}` : ""}`,
+      product_data: {
         size: selectedSize,
+        scent: selectedScent !== null ? selectedScent : "No Scent",
         price: equivalentPrice,
-      }
+      },
     }
     const quantityObject = { count: quantity };
     addItem(item, quantityObject)
@@ -81,10 +86,10 @@ export function ProductInfo({product}:Props) {
           <br />
           Content Weight: <strong>{getSizeValue(selectedSize)}</strong>
           {selectedScent !== null && ( // Check if a scent is selected
-            <>
-              <br />
-              Scent: <strong>{getScentName(selectedScent)}</strong>
-            </>
+          <>
+            <br />
+            Scent: <strong>{getScentName(selectedScent)}</strong>
+          </>
           )}
         </p>
         {product.sizes.map((size) => (

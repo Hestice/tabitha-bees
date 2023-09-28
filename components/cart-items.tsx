@@ -8,7 +8,7 @@ import { formatCurrencyString, useShoppingCart } from "use-shopping-cart"
 import { Product } from "use-shopping-cart/core"
 
 import { shimmer, toBase64 } from "@/lib/image"
-import { getSizeName } from "@/lib/utils"
+import { getSizeName, getScentName } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { useToast } from "@/components/ui/use-toast"
@@ -67,7 +67,14 @@ export function CartItems() {
                 <p className="mt-1 text-sm font-medium">
                   Size: {/* @ts-ignore */}
                   <strong>{getSizeName(product.product_data.size)}</strong>
-                </p>
+                </p>{/* @ts-ignore */}
+                {product.product_data.scent !== "No Scent" && (
+                  <p className="mt-1 text-sm font-medium">
+                    Scent: {/* @ts-ignore */}
+                    <strong>{getScentName(product.product_data.scent)}</strong>
+                  </p>
+                )}
+
               </div>
 
               <div className="mt-4 sm:mt-0 sm:pr-9">
