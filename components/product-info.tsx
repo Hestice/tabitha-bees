@@ -46,11 +46,18 @@ export function ProductInfo({ product }: Props) {
         scent: selectedScent !== null ? selectedScent : "No Scent",
         price: equivalentPrice,
       },
+      value: equivalentPrice,
+      _id: `${product.id}-${selectedSize}${selectedScent !== null ? `-${selectedScent}` : ""}`
+    }
+
+    const test = {
+      ...product
     }
     const quantityObject = { count: quantity };
     addItem(item, quantityObject)
     // isInCart ? incrementItem(item._id, quantityObject) : addItem(item, quantityObject)
-    console.log(item)
+    console.log("the item is", item)
+    console.log("the test is", test)
 
     toast({
       title: `${item.name} (${getSizeName(selectedSize)})`,

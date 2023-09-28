@@ -12,6 +12,18 @@ export function CartSummary() {
   console.log("totalPrice: ",totalPrice)
   console.log("cartDetails: ",cartDetails)
   console.log("cartCount: ",cartCount)
+
+  const itemsInCart = Object.values(cartDetails || {})
+
+  const _totalPrice = Object.values(cartDetails || {}).reduce((acc, item) => {
+    const productData = item.product_data as { price: number }; 
+    if (productData && typeof productData.price === 'number') {
+      const price = productData.price;
+      return acc + price * item.quantity;
+    }
+    return acc;
+  }, 0);
+
   function onCheckout() {}
 
   return (
@@ -24,19 +36,24 @@ export function CartSummary() {
       </h2>
 
       <dl className="mt-6 space-y-4">
-        <div className="flex items-center justify-between">
-          <dt className="text-sm">Subtotal</dt>
-          <dd className="text-sm font-medium">{formattedTotalPrice}</dd>
-        </div>
+        {itemsInCart.map((item) => (
+            <div
+              key={item.id}
+              className="flex items-center justify-between "
+            >
+              <dt className="text-sm">
+                {item.name} <span className="text-gray-500">({item.quantity})</span>
+              </dt>
+              <dd className="text-sm font-medium">
+                {/* @ts-ignore */}
+                ₱ {item.product_data.price * item.quantity}
+              </dd>
+            </div>
+          ))}
+
         <div className="flex items-center justify-between border-t border-gray-200 pt-4 dark:border-gray-600">
-          <dt className="flex items-center text-sm">
-            <span>Shipping estimate</span>
-          </dt>
-          <dd className="text-sm font-medium">Shipping Amount</dd>
-        </div>
-        <div className="flex items-center justify-between border-t border-gray-200 pt-4 dark:border-gray-600">
-          <dt className="text-base font-medium">Order total</dt>
-          <dd className="text-base font-medium">Order Amount</dd>
+          <dt className="text-base font-medium">Order Total</dt>
+          <dd className="text-base font-medium">₱ {_totalPrice}</dd>
         </div>
       </dl>
 
