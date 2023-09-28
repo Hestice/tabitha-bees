@@ -41,8 +41,10 @@ export function CartSummary() {
               key={item.id}
               className="flex items-center justify-between "
             >
-              <dt className="text-sm">
-                {item.name} <span className="text-gray-500">({item.quantity})</span>
+              <dt className="text-sm"> {/* @ts-ignore */}
+                {item.name} {item.product_data.size === 'tube' ? null : `- ${item.product_data.size}` } {/* @ts-ignore */}
+                {item.product_data.scent === 'No Scent' ? null : `/ ${item.product_data.scent}`} 
+                <span className="text-gray-500"> ({item.quantity})</span>
               </dt>
               <dd className="text-sm font-medium">
                 {/* @ts-ignore */}
