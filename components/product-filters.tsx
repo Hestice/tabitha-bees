@@ -26,7 +26,7 @@ const filters = [
       { value: "s", label: "Small" },
       { value: "r", label: "Regular" },
       { value: "l", label: "Large" },
-      { value: "one-size", label: "One Size" },
+      { value: "tube", label: "One Size" },
     ],
   },
 ]

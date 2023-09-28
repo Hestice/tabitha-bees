@@ -6,8 +6,7 @@ import { ArrowRight } from "lucide-react"
 import { formatCurrencyString, useShoppingCart } from "use-shopping-cart"
 
 import { SanityProduct } from "@/config/inventory"
-import { getSizeName } from "@/lib/utils"
-import { getSizeValue } from "@/lib/utils"
+import { getSizeName, getSizeValue, getScentName } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
 import { useToast } from "@/components/ui/use-toast"
 
@@ -17,6 +16,10 @@ interface Props {
 
 export function ProductInfo({product}:Props) {
   const [selectedSize, setSelectedSize] = useState(product.sizes[0])
+  const [selectedScent, setSelectedScent] = useState<string | null>(
+    product.scent && product.scent.length > 0 ? product.scent[0] : null
+  );
+  
   const [quantity, setQuantity] = useState(1);
   const {addItem, incrementItem, cartDetails} = useShoppingCart()
   const { toast } = useToast()
@@ -75,18 +78,41 @@ export function ProductInfo({product}:Props) {
       <div className="mt-4">
         <p>
           Size: <strong>{getSizeName(selectedSize)}</strong>
-          <br/>
+          <br />
           Content Weight: <strong>{getSizeValue(selectedSize)}</strong>
+          {selectedScent !== null && ( // Check if a scent is selected
+            <>
+              <br />
+              Scent: <strong>{getScentName(selectedScent)}</strong>
+            </>
+          )}
         </p>
         {product.sizes.map((size) => (
-          <Button onClick={()=> 
-            setSelectedSize(size)
-          }
-              key={size} variant={selectedSize === size ? 'default' : 'outline'} className="mr-2 mt-4">
+          <Button
+            onClick={() => setSelectedSize(size)}
+            key={size}
+            variant={selectedSize === size ? 'default' : 'outline'}
+            className="mr-2 mt-4"
+          >
             {getSizeName(size)}
           </Button>
         ))}
       </div>
+
+      {product.scent && product.scent.length > 0 && (
+        <div className="mt-4">
+          {product.scent.map((scent) => (
+            <Button
+              onClick={() => setSelectedScent(scent)}
+              key={scent}
+              variant={selectedScent === scent ? 'default' : 'outline'}
+              className="mr-2 mt-4"
+            >
+              {getScentName(scent)}
+            </Button>
+          ))}
+        </div>
+      )}
       <br/>
 
       <form className="mt-6">

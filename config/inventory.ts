@@ -7,6 +7,7 @@ interface InventoryProduct {
   images: string[]
   categories: string[]
   sizes: string[]
+  scent: string[]
   price: number
   prices: number[]
   currency: string

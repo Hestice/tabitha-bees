@@ -24,6 +24,7 @@ export default async function Page({params}: Props) {
       currency,
       description,
       sizes,
+      scent,
       categories,
       "slug": slug.current
     }`)
